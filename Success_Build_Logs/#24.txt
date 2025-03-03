@@ -1,0 +1,78 @@
+Started by user unknown or anonymous
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on jenkins_agent in /home/jenkins/agent/workspace/test_app
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout)
+[Pipeline] deleteDir
+[Pipeline] sh
++ git clone /srv/scm/test_app .
+Cloning into '.'...
+done.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Config)
+[Pipeline] dir
+Running in /home/jenkins/agent/workspace/test_app/build
+[Pipeline] {
+[Pipeline] sh
++ cmake --version
+cmake version 3.25.1
+
+CMake suite maintained and supported by Kitware (kitware.com/cmake).
++ cmake -GUnix Makefiles -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=-std=c++11 ..
+-- The CXX compiler identification is GNU 12.2.0
+-- The C compiler identification is GNU 12.2.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/jenkins/agent/workspace/test_app/build
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build)
+[Pipeline] sh
++ cmake --build build --config Debug --target Test
+[ 25%] Building CXX object CMakeFiles/Test.dir/src/test.cpp.o
+[ 50%] Building CXX object CMakeFiles/Test.dir/src/features.cpp.o
+[ 75%] Building C object CMakeFiles/Test.dir/src/platform_linux.c.o
+[100%] Linking CXX executable Test
+[100%] Built target Test
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Run Test)
+[Pipeline] sh
++ set +e
++ ./build/Test
+Test program
+[ SUCCESS ] TestSuite.Addition
+[ SUCCESS ] TestSuite.Multiplication
+[ FAILURE ] TestSuite.WontWork
+[ RESULTS ] 2/3
++ TEST_EXIT=1
++ [ 1 -ne 0 ]
++ echo Note: Test failures detected but this is expected
+Note: Test failures detected but this is expected
++ echo The WontWork test is known to fail and is being ignored
+The WontWork test is known to fail and is being ignored
++ exit 0
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
